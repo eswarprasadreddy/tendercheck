@@ -1,347 +1,267 @@
 <div align="center">
 
-# 🏛️ TenderCheck
+# TenderCheck
 
-### **Autonomous Verification & AI-Assisted Compliance Engine for Enterprise & Government Tenders**
+**Automated compliance verification and cross-document discrepancy auditing for enterprise & public procurement tenders.**
 
-[![GitHub Stars](https://img.shields.io/github/stars/eswarprasadreddy/tendercheck?style=for-the-badge&logo=github&color=38bdf8&logoColor=white)](https://github.com/eswarprasadreddy/tendercheck/stargazers)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![React 19](https://img.shields.io/badge/React-19.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Gemini 2.0 Flash](https://img.shields.io/badge/Google%20Gemini-2.0%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16--Alpine-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)](./LICENSE)
-
-<br/>
+[![CI](https://img.shields.io/github/actions/workflow/status/eswarprasadreddy/tendercheck/ci.yml?branch=main&style=flat-square&label=CI&color=18181b)](https://github.com/eswarprasadreddy/tendercheck/actions)
+[![Release](https://img.shields.io/github/v/release/eswarprasadreddy/tendercheck?style=flat-square&color=18181b)](https://github.com/eswarprasadreddy/tendercheck/releases)
+[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3b82f6?style=flat-square)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-059669?style=flat-square)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-19.3-0284c7?style=flat-square)](https://react.dev)
+[![License](https://img.shields.io/badge/license-MIT-71717a?style=flat-square)](LICENSE)
 
 <p align="center">
-  <b>TenderCheck</b> transforms dense, multi-hundred-page public tender RFPs and complex vendor bid packages into structured, cross-audited compliance determinations in seconds. Built on a <b>Human-in-the-Loop</b> architecture, TenderCheck combines Gemini 2.0 Flash intelligence with deterministic Python verification engines and cross-document discrepancy auditing.
+  <a href="#overview">Overview</a> &bull;
+  <a href="#how-it-works">How It Works</a> &bull;
+  <a href="#core-features">Features</a> &bull;
+  <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#architecture">Architecture</a> &bull;
+  <a href="#api-reference">API Reference</a> &bull;
+  <a href="#sector-configuration">Sector Config</a>
 </p>
 
-[Explore Documentation](#-architecture--engine-design) • [Quickstart (Docker)](#-quick-start) • [Interactive Flow](#-workflow-pipeline) • [Sector Schema](#-pluggable-sector-rules) • [API Reference](#-api-specification)
-
-<br/>
-
-```
-╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗
-║                                                                                                   ║
-║   Tender PDF (GeM / RFP) ──► PyMuPDF + OCR ──► Gemini 2.0 Flash (Clause Extractor)                ║
-║                                                          │                                        ║
-║                                                          ▼                                        ║
-║   Vendor Submissions     ──► Evidence Parser ──► Deterministic Verification Rules                 ║
-║   (P&L, ISO, Spec Sheets)                                │                                        ║
-║                                                          ▼                                        ║
-║                                           Cross-Doc Contradiction Engine                          ║
-║                                                          │                                        ║
-║                                                          ▼                                        ║
-║                                       Officer Confirmation Audit Trail                            ║
-║                                                                                                   ║
-╚═══════════════════════════════════════════════════════════════════════════════════════════════════╝
-```
-
 </div>
 
 ---
 
-## ⚡ Highlights
+## Overview
 
-- **⚡ Hybrid Text & Vision Ingestion**: Seamlessly processes native digital PDFs and low-resolution scanned photocopies via `PyMuPDF` with automatic `Tesseract OCR` fallback.
-- **🧠 Zero-Hallucination Clause Parser**: Extracts structured requirements across Technical Specifications, Financial Minimums, Certifications, Legal Covenants, and Delivery Schedules with schema-validated Pydantic models.
-- **🛡️ Deterministic Rule Verification**: Eliminates LLM flakiness in critical qualification criteria. Numbers, turnover thresholds, validity dates, and mathematical comparisons execute in sandboxed, test-backed Python rule sets.
-- **🔍 Multi-Document Contradiction Engine**: Catches conflicting claims across multiple vendor submissions (e.g., claiming 32 GB RAM in the compliance matrix while attaching spec sheets stating 16 GB, or contradictory annual turnover across balance sheets).
-- **⚖️ Human-in-the-Loop Officer Audit Trail**: The AI is purely advisory. Every qualification verdict links to exact line citations, page coordinates, and requires an authenticated procurement officer's sign-off before official report generation.
-- **🔌 Pluggable Sector Intelligence**: Ships out-of-the-box with GeM-compliant IT Hardware & Electronics rules (BIS, Make-in-India Class I/II, MSME Udyam exemptions, ISO 9001/27001), extensible to Defense, Civil Works, and Healthcare.
+Public tenders (such as GeM in India or state procurement RFPs) span hundreds of pages of complex technical, financial, and legal criteria. Evaluating multiple vendor bids manually requires hours of cross-referencing PDFs, spreadsheets, and certificates—a process prone to human oversight, calculation mistakes, and undetected vendor discrepancies.
+
+**TenderCheck** automates the end-to-end evaluation pipeline with a **human-in-the-loop, zero-hallucination verification model**:
+
+- **Semantic Clause Normalization**: Extracts and parses dense tender clauses into typed, structured criteria using Gemini 2.0 Flash.
+- **Deterministic Python Verification**: Eliminates LLM math and date errors. Numerical specifications (RAM, SSD, screen size), financial minimums (average turnover, net worth), and certificate expirations are computed by sandboxed Python logic.
+- **Cross-Document Discrepancy Auditing**: Automatically flags conflicts across separate vendor uploads (e.g., claiming 32 GB RAM in the compliance summary while attaching an OEM datasheet specifying 16 GB).
+- **Officer Audit Trail**: The platform is strictly advisory. Every determination includes page-level citations, side-by-side evidence inspection, and requires explicit procurement officer review and sign-off.
 
 ---
 
-## 🏗️ Architecture & Engine Design
+## How It Works
 
-TenderCheck operates on an asymmetric verification paradigm: **LLMs extract and normalize unstructured text; deterministic mathematical engines verify compliance.**
-
-```mermaid
-flowchart TD
-    subgraph Ingestion["1. Ingestion & Extraction"]
-        T_PDF[Tender Document PDF] --> EXT_T[PyMuPDF / Tesseract OCR]
-        V_PDF[Vendor Bid Packets] --> EXT_V[PyMuPDF / Tesseract OCR]
-    end
-
-    subgraph Parsing["2. Semantic Clause Parsing"]
-        EXT_T --> LLM_PARSE[Gemini 2.0 Flash Clause Parser]
-        LLM_PARSE --> REQ_DB[(Normalized Requirements DB)]
-    end
-
-    subgraph Matching["3. Evidence Matching & Verification"]
-        REQ_DB --> MATCH_ENG[Matching Engine]
-        EXT_V --> MATCH_ENG
-        MATCH_ENG --> EV_SCHEMA[Extracted Evidence Model]
-        EV_SCHEMA --> RULE_ENG{Deterministic Rule Engine}
-        RULE_ENG -->|Specs / Math / Validity| VERDICT[Match Verdict: Compliant / Non-Compliant / Missing]
-    end
-
-    subgraph Auditing["4. Cross-Verification & Human Audit"]
-        VERDICT --> CONTRA_DET[Cross-Document Contradiction Detector]
-        CONTRA_DET --> REP_GEN[Advisory Compliance Matrix]
-        REP_GEN --> UI_DASH[React 19 Officer Dashboard]
-        UI_DASH -->|Officer Confirmation & Notes| SIGNED_REP[Certified Audit Report]
-    end
-
-    classDef primary fill:#0284c7,stroke:#0369a1,stroke-width:2px,color:#ffffff;
-    classDef secondary fill:#0f172a,stroke:#334155,stroke-width:1px,color:#f8fafc;
-    classDef accent fill:#10b981,stroke:#059669,stroke-width:2px,color:#ffffff;
-
-    class T_PDF,V_PDF,SIGNED_REP primary;
-    class LLM_PARSE,RULE_ENG,CONTRA_DET accent;
-    class EXT_T,EXT_V,REQ_DB,MATCH_ENG,EV_SCHEMA,VERDICT,REP_GEN,UI_DASH secondary;
+```
+┌────────────────────────┐      ┌────────────────────────┐
+│  Tender Document (PDF) │      │  Vendor Packets (PDFs) │
+│  (GeM / RFP Clauses)   │      │  (Specs, P&L, Audits)  │
+└───────────┬────────────┘      └───────────┬────────────┘
+            │                               │
+            ▼                               ▼
+  PyMuPDF + Tesseract OCR        PyMuPDF + Tesseract OCR
+            │                               │
+            ▼                               │
+  Gemini 2.0 Flash Parser                   │
+  (Structured Clause Schema)                │
+            │                               │
+            ▼                               ▼
+    ┌──────────────────────────────────────────────┐
+    │          Deterministic Match Engine          │
+    │  - Specification checks (e.g., RAM >= 16GB)  │
+    │  - Financial thresholds (Turnover, Networth) │
+    │  - Certificate validity & date verification  │
+    └──────────────────────┬───────────────────────┘
+                           │
+                           ▼
+    ┌──────────────────────────────────────────────┐
+    │      Cross-Document Discrepancy Auditor      │
+    │  Detects conflicting claims between docs     │
+    └──────────────────────┬───────────────────────┘
+                           │
+                           ▼
+    ┌──────────────────────────────────────────────┐
+    │         Procurement Officer Workbench        │
+    │  - Side-by-side evidence inspection          │
+    │  - Source page & snippet citations           │
+    │  - Manual override & signed audit record     │
+    └──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📊 Comparison Matrix
+## Core Features
 
-| Capability | Traditional Manual Review | Generic LLM Chatbot | **TenderCheck** |
-| :--- | :---: | :---: | :---: |
-| **Audit Defense & Citation Tracking** | ❌ Manual bookmarking | ❌ Vague references | **✅ Page-level, snippet-bound citations** |
-| **Numeric & Formula Precision** | ⚠️ Human error prone | ❌ Prone to math hallucinations | **✅ Sandboxed Python deterministic logic** |
-| **Cross-Document Discrepancy Flagging**| ❌ Misses subtle conflicts | ⚠️ Limited context window | **✅ Automated Multi-File Contradiction Service** |
-| **Procurement Exemption Handling** | ⚠️ Complex manual check | ❌ Irregular compliance | **✅ Baked-in MSME, Startup & GeM policies** |
-| **Legal Non-Repudiation** | ⚠️ Disjointed signatures | ❌ Cannot be certified | **✅ Authenticated Officer Review & Audit Log** |
+- **Hybrid PDF Ingestion**: High-speed text extraction via PyMuPDF with automatic fallback to Tesseract OCR for scanned or rasterized pages.
+- **Strict Separation of Concerns**: LLMs extract and structure unstructured text into Pydantic models; deterministic code performs numeric and boolean verification.
+- **Pluggable Sector Configurations**: Declarative JSON schemas define sector-specific parameters (e.g. IT Hardware, Civil Works, Medical Supplies), including known certifications (ISO, BIS, MSME, Make-in-India), required specifications, and exemptions.
+- **Real-Time Officer Workbench**: Clean React 19 interface displaying side-by-side compliance matrices, conflicting claims, and highlighted document citations.
+- **Full Traceability**: Every evaluation outcome points to an exact document, page number, and text excerpt for defensible audit records.
 
 ---
 
-## 🛠️ Tech Stack
+## Quick Start
 
-<div align="center">
+### 1. Run with Docker Compose (Recommended)
 
-| Layer | Technologies | Purpose |
-| :--- | :--- | :--- |
-| **Frontend** | React 19, Vite 8, Lucide React, Modern CSS System | Real-time Officer Workbench, interactive evidence viewer, dark-mode first design |
-| **Backend API** | FastAPI 0.115, Pydantic v2, Uvicorn, Python 3.10+ | Asynchronous RESTful core, OpenAPI documentation, robust schema validation |
-| **Intelligence** | Google Gemini 2.0 Flash (`google-genai` SDK) | Ultra-fast clause extraction, evidence structuring, and semantic similarity |
-| **Document Processing**| PyMuPDF (Fitz 1.25), Tesseract OCR, Pillow | High-speed PDF rendering, vectorized text parsing, raster OCR fallback |
-| **Persistence** | PostgreSQL 16 Alpine, SQLAlchemy 2.0 (Asyncpg), Alembic | Fully async relational storage with migrations, JSONB audit logs |
-| **DevOps** | Docker, Docker Compose, Pytest AsyncIO, Oxlint | Single-command containerized spinup and rigorous automated testing |
-
-</div>
-
----
-
-## 🚀 Quick Start
-
-### Option 1: Docker Compose (Recommended)
-
-Get the complete system running in under 2 minutes:
+Make sure you have [Docker](https://docs.docker.com/get-docker/) installed.
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/eswarprasadreddy/tendercheck.git
 cd tendercheck
 
-# 2. Configure environment
+# Configure environment
 cp backend/.env.example backend/.env
-# Open backend/.env and add your GEMINI_API_KEY
+# Set your GEMINI_API_KEY in backend/.env
 
-# 3. Spin up PostgreSQL, FastAPI Backend, and Services
-docker-compose up --build
+# Start PostgreSQL and the backend API
+docker compose up --build
 ```
 
-- **Frontend Application**: `http://localhost:5173`
-- **FastAPI OpenAPI Swagger**: `http://localhost:8000/docs`
-- **API Health Check**: `http://localhost:8000/health`
+- **API Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
 
 ---
 
-### Option 2: Local Development Setup
+### 2. Local Development Setup
 
 #### Prerequisites
-- Python 3.10 or higher
-- Node.js 18+ & npm
-- PostgreSQL 14+ running locally (or via Docker)
-- Tesseract OCR (`tesseract` in system PATH)
+- Python 3.10+
+- Node.js 18+ and npm
+- PostgreSQL 14+ (or run via Docker)
+- Tesseract OCR (installed and available on system `PATH`)
 
-#### 1. Backend Setup
+#### Backend
 
 ```bash
 cd backend
 
-# Create virtual environment
+# Create and activate a virtual environment
 python -m venv .venv
-# Linux/macOS: source .venv/bin/activate
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
+source .venv/bin/activate       # On Windows: .venv\Scripts\Activate.ps1
 
-# Install core dependencies with testing suite
+# Install package with test dependencies
 pip install -e ".[test]"
 
-# Configure environment variables
-copy .env.example .env
-# Edit .env with your PostgreSQL credentials & GEMINI_API_KEY
+# Set environment variables
+cp .env.example .env
 
 # Run database migrations
 alembic upgrade head
 
-# Start FastAPI development server
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# Start development server
+uvicorn app.main:app --reload --port 8000
 ```
 
-#### 2. Frontend Setup
+#### Frontend
 
 ```bash
 cd ../frontend
 
-# Install dependencies
 npm install
-
-# Launch Vite development server
 npm run dev
 ```
 
+The frontend will be available at [http://localhost:5173](http://localhost:5173).
+
 ---
 
-## 🧪 Demo Pipeline & Synthetic Evaluation
+### 3. Run the Evaluation Pipeline Demo
 
-TenderCheck includes an automated end-to-end evaluation runner with synthetic GeM IT Hardware tenders and multi-vendor submissions (Vendor A: compliant, Vendor B: disqualified with spec mismatches and expired certificates):
+TenderCheck includes a standalone pipeline script running synthetic GeM tender evaluations across multiple vendors:
 
 ```bash
-# From workspace root
 python demo_data/run_demo_pipeline.py
 ```
 
-<details>
-<summary><b>View Sample Terminal Output</b></summary>
-
-```text
-================================================================================
- TenderCheck Demo Pipeline: End-to-End Evaluation
-================================================================================
-[+] Ingesting Tender: tender_gem_2026_it_hardware.pdf (3 pages)
-[+] Extracted 12 requirements across Technical, Financial, Certifications, Experience
-[+] Processing Vendor A: TechCorp Solutions Ltd.
-    - Verified ISO 9001:2015 [Valid through 2027-11-15] -> COMPLIANT
-    - Verified Annual Turnover [INR 45.20 Cr >= INR 25.00 Cr] -> COMPLIANT
-    - Verified RAM Spec [32 GB >= 16 GB] -> COMPLIANT
-    - Cross-Doc Contradictions Found: 0
-    - Advisory Overall Verdict: QUALIFIED (100% Match)
-
-[+] Processing Vendor B: Apex Infotech Pvt. Ltd.
-    - Verified ISO 9001:2015 [EXPIRED on 2024-03-01] -> NON_COMPLIANT
-    - Verified Display Resolution [Claimed: FHD 1080p, Attached: HD 720p] -> CONTRADICTION
-    - Cross-Doc Contradictions Found: 2 (High Severity)
-    - Advisory Overall Verdict: DISQUALIFIED
-```
-</details>
+This ingests `demo_data/tender_gem_2026_it_hardware.pdf`, extracts requirements, evaluates Vendor A (fully compliant) and Vendor B (disqualified due to expired ISO certificate and specification contradictions), and prints the verified compliance matrix.
 
 ---
 
-## 📁 Repository Structure
+## Architecture & Project Structure
 
 ```
 tendercheck/
 ├── backend/
 │   ├── app/
-│   │   ├── api/v1/                # REST endpoints (Tenders, Documents, Matching, Reports)
-│   │   ├── llm/                   # Gemini 2.0 Flash prompt templates & parsers
-│   │   ├── models/                # SQLAlchemy 2.0 Async ORM models
-│   │   ├── schemas/               # Pydantic validation schemas (Evidence, Match, Verdict)
-│   │   ├── sectors/               # Pluggable sector rules (e.g., it_hardware.json)
+│   │   ├── api/v1/                # REST route handlers
+│   │   │   ├── tenders.py         # Tender upload and clause extraction
+│   │   │   ├── vendor_documents.py# Bid packet uploads
+│   │   │   ├── matching.py        # Matching & contradiction engine routes
+│   │   │   └── reports.py         # Final audit report and officer sign-off
+│   │   ├── llm/                   # Gemini 2.0 Flash prompts and client
+│   │   ├── models/                # SQLAlchemy 2.0 async ORM models
+│   │   ├── schemas/               # Pydantic v2 data transfer schemas
+│   │   ├── sectors/               # Sector schemas (e.g., it_hardware.json)
 │   │   ├── services/
-│   │   │   ├── pdf_extractor.py          # PyMuPDF + Tesseract OCR hybrid extractor
-│   │   │   ├── requirement_parser.py     # LLM clause normalization service
-│   │   │   ├── matching_engine.py        # Vectorized evidence-requirement matcher
-│   │   │   ├── verification_engine.py    # Sandboxed deterministic Python rule engine
-│   │   │   ├── contradiction_service.py  # Cross-document claim discrepancy detector
-│   │   │   └── report_service.py         # Audit report & signed officer verdict pipeline
-│   │   ├── config.py              # Dynamic settings & environment manager
+│   │   │   ├── pdf_extractor.py         # PyMuPDF + Tesseract OCR hybrid pipeline
+│   │   │   ├── requirement_parser.py    # Gemini clause parser
+│   │   │   ├── matching_engine.py       # Evidence-to-requirement matcher
+│   │   │   ├── verification_engine.py   # Deterministic Python rule checks
+│   │   │   ├── contradiction_service.py # Cross-document conflict scanner
+│   │   │   └── report_service.py        # Report compiler & audit exporter
+│   │   ├── config.py              # Application settings
 │   │   ├── database.py            # Async engine and session factory
-│   │   └── main.py                # FastAPI lifecycle & application assembly
-│   ├── alembic/                   # Database version migration scripts
-│   ├── tests/                     # Test suite (Unit, Mock, Evidence Rules, Integration)
-│   └── pyproject.toml             # Python packaging & dependencies
+│   │   └── main.py                # FastAPI entry point
+│   ├── alembic/                   # Database migrations
+│   ├── tests/                     # Unit and integration tests
+│   └── pyproject.toml             # Python package configuration
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── RequirementsScreen.jsx   # Parsed clause editor & rule customizer
-│   │   │   ├── UploadScreen.jsx         # Tender & multi-vendor dropzone with OCR status
-│   │   │   ├── ComplianceScreen.jsx     # Side-by-side compliance grid with live filters
-│   │   │   ├── EvidencePanel.jsx        # Page-anchored snippet & citation viewer
-│   │   │   └── LoginScreen.jsx          # Secure procurement officer sign-in
-│   │   ├── api.js                       # Axios/fetch communication layer
-│   │   ├── App.jsx                      # App root router & state transitions
-│   │   └── index.css                    # Modern CSS design system
+│   │   ├── components/            # Screens: Upload, Requirements, Compliance, Evidence
+│   │   ├── api.js                 # API communication layer
+│   │   ├── App.jsx                # Application root and state machine
+│   │   └── index.css              # Styling tokens
 │   └── package.json
-├── demo_data/                     # Synthetic test PDFs & pipeline verification runners
-├── docker-compose.yml             # Full-stack orchestrator (FastAPI + Postgres + Vite)
-└── README.md
+├── demo_data/                     # Sample tender & vendor test files
+└── docker-compose.yml             # Container orchestration
 ```
 
 ---
 
-## 📡 API Specification
+## API Reference
 
-| Method | Endpoint | Description | Key Parameters |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/tenders/upload` | Ingests Tender PDF, runs OCR if needed, extracts requirements via Gemini | `file: UploadFile`, `title: str`, `sector: str` |
-| `GET` | `/api/v1/tenders/{id}/requirements` | Fetches parsed requirements list with categories and operators | `tender_id: UUID` |
-| `PUT` | `/api/v1/tenders/{id}/requirements/{req_id}`| Customizes or overrides requirement rules before evaluation | `RequirementUpdateSchema` |
-| `POST` | `/api/v1/vendor-docs/upload` | Ingests vendor bid packets (Certificates, P&L, Specs) | `file: UploadFile`, `vendor_name: str` |
-| `POST` | `/api/v1/matching/run/{tender_id}/{vendor}` | Triggers matching, deterministic rules, & contradiction scanner | `tender_id`, `vendor_name` |
-| `GET` | `/api/v1/reports/{tender_id}/{vendor}` | Returns full compliance evaluation matrix with citations | `tender_id`, `vendor_name` |
-| `POST` | `/api/v1/reports/{report_id}/confirm` | Human Officer signs off, approves, or overrides verdicts | `officer_id`, `signature`, `notes` |
+Interactive Swagger documentation is available at `/docs` when the backend is running.
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/v1/tenders/upload` | Uploads tender PDF, extracts text, and runs clause extraction. |
+| `GET` | `/api/v1/tenders/{id}/requirements` | Fetches parsed requirements list with categories and operators. |
+| `PUT` | `/api/v1/tenders/{id}/requirements/{req_id}` | Updates or customizes a requirement before evaluation. |
+| `POST` | `/api/v1/vendor-docs/upload` | Uploads vendor bid documents (P&L, spec sheets, certificates). |
+| `POST` | `/api/v1/matching/run/{tender_id}/{vendor_name}` | Triggers deterministic verification and contradiction analysis. |
+| `GET` | `/api/v1/reports/{tender_id}/{vendor_name}` | Retrieves full compliance matrix with citations and discrepancy flags. |
+| `POST` | `/report/confirm` | Records officer verdict confirmation, notes, and approval status. |
+| `GET` | `/health` | Service health check endpoint. |
 
 ---
 
-## 🔌 Pluggable Sector Rules
+## Sector Configuration
 
-TenderCheck is engineered for rapid domain adaptation. Adding a new procurement sector (e.g., Medical Devices, Solar EPC, Heavy Construction) requires simply creating a declarative JSON schema under `backend/app/sectors/`:
+Sectors are defined declaratively as JSON files in `backend/app/sectors/`. A sector configuration defines the known certificates, standard technical specifications, financial rules, and exemption policies for that domain.
+
+Example snippet from `it_hardware.json`:
 
 ```json
 {
-  "sector_id": "solar_epc",
-  "sector_name": "Solar PV Power Plant Procurement",
+  "sector_id": "it_hardware",
+  "sector_name": "IT Hardware & Electronics Procurement",
   "known_certificates": [
-    {"key": "mnre_approval", "name": "MNRE Enlistment ALMM", "has_expiry": true},
-    {"key": "iec_61215",     "name": "IEC 61215 Terrestrial PV Modules", "has_expiry": true}
+    { "key": "iso_9001", "name": "ISO 9001:2015", "has_expiry": true, "category": "certification" },
+    { "key": "bis_registration", "name": "BIS Registration", "has_expiry": true, "category": "certification" },
+    { "key": "make_in_india", "name": "Make in India Certificate", "has_expiry": true, "category": "compliance" }
   ],
   "known_specs": [
-    {"key": "module_efficiency_pct", "name": "Module Efficiency", "unit": "%", "default_operator": ">="},
-    {"key": "inverter_capacity_kw",  "name": "Inverter Capacity",  "unit": "kW", "default_operator": ">="}
-  ],
-  "known_financial_fields": [
-    {"key": "annual_turnover", "name": "Average Annual Turnover", "unit": "INR"}
+    { "key": "ram_gb", "name": "RAM", "unit": "GB", "default_operator": ">=" },
+    { "key": "ssd_gb", "name": "SSD Storage", "unit": "GB", "default_operator": ">=" },
+    { "key": "processor", "name": "Processor", "unit": null, "default_operator": "==" }
   ]
 }
 ```
 
----
-
-## 🛡️ Security, Privacy & Compliance
-
-- **No Training on Sensitive Documents**: Queries sent to Gemini Flash are processed with enterprise zero-retention / zero-training flags.
-- **Local OCR & Parsing Options**: Extractors can operate completely air-gapped on private intranets with local LLM gateways (Ollama/vLLM) if required.
-- **Immutable Audit Logging**: Every manual officer verdict override is recorded in PostgreSQL with timestamp, user ID, previous verdict, and required justification note.
+To support a new sector (e.g., Solar EPC or Medical Supplies), add a new `<sector_id>.json` file and set `SECTOR=<sector_id>` in your environment.
 
 ---
 
-## 🤝 Contributing
+## Testing
 
-Contributions are what make the open-source community an incredible place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Backend test suites cover PDF parsing, deterministic rule execution, contradiction detection, and API endpoints:
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: Add deterministic solar battery rule parser'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See [`LICENSE`](./LICENSE) for more information.
+```bash
+cd backend
+pytest -v
+```
 
 ---
 
-<div align="center">
+## License
 
-Built with precision by [Eswar Prasad Reddy](https://github.com/eswarprasadreddy) and open-source contributors.
-
-⭐ **Star us on GitHub if TenderCheck helps your procurement workflow!**
-
-</div>
+This project is licensed under the [MIT License](LICENSE).

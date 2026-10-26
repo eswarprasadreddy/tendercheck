@@ -1,0 +1,57 @@
+{
+  "sector_id": "it_hardware",
+  "sector_name": "IT Hardware & Electronics Procurement",
+  "description": "Laptops, desktops, servers, networking equipment on GeM",
+  "platforms": ["GeM"],
+
+  "known_certificates": [
+    {"key": "iso_9001",         "name": "ISO 9001:2015",               "has_expiry": true,  "category": "certification"},
+    {"key": "gst_registration", "name": "GST Registration Certificate", "has_expiry": false, "category": "legal"},
+    {"key": "bis_registration", "name": "BIS Registration",            "has_expiry": true,  "category": "certification"},
+    {"key": "oem_authorization","name": "OEM Authorization Letter",    "has_expiry": true,  "category": "certification"},
+    {"key": "msme_udyam",       "name": "MSME Udyam Registration",     "has_expiry": false, "category": "certification"},
+    {"key": "startup_dpiit",    "name": "DPIIT Startup Certificate",   "has_expiry": true,  "category": "certification"},
+    {"key": "make_in_india",    "name": "Make in India Certificate",   "has_expiry": true,  "category": "compliance"}
+  ],
+
+  "known_specs": [
+    {"key": "ram_gb",         "name": "RAM",           "unit": "GB",     "default_operator": ">="},
+    {"key": "ssd_gb",         "name": "SSD Storage",   "unit": "GB",     "default_operator": ">="},
+    {"key": "hdd_gb",         "name": "HDD Storage",   "unit": "GB",     "default_operator": ">="},
+    {"key": "display_inches", "name": "Display Size",  "unit": "inches", "default_operator": ">="},
+    {"key": "battery_wh",     "name": "Battery",       "unit": "Wh",     "default_operator": ">="},
+    {"key": "processor",      "name": "Processor",     "unit": null,     "default_operator": "=="},
+    {"key": "warranty_years", "name": "Warranty",      "unit": "years",  "default_operator": ">="}
+  ],
+
+  "known_financial_fields": [
+    {"key": "annual_turnover",       "name": "Average Annual Turnover",   "unit": "INR"},
+    {"key": "similar_orders_value",  "name": "Similar Order Value",       "unit": "INR"},
+    {"key": "similar_orders_count",  "name": "Similar Order Count",       "unit": "orders"},
+    {"key": "net_worth",             "name": "Net Worth",                 "unit": "INR"}
+  ],
+
+  "known_experience_fields": [
+    {"key": "years_in_business",  "name": "Years in Business",        "unit": "years"},
+    {"key": "past_orders_count",  "name": "Past Similar Order Count", "unit": "orders"}
+  ],
+
+  "known_dates": [
+    {"key": "certificate_validity", "name": "Certificate Validity Date"},
+    {"key": "bid_validity",         "name": "Bid Validity Period / Date", "unit": "days"}
+  ],
+
+  "make_in_india_classes": ["Class I", "Class II", "Class III"],
+
+  "msme_categories": ["Micro", "Small", "Medium"],
+
+  "prompt_hints": [
+    "Turnover requirements are usually stated as 'average annual turnover of INR X crore' or in Lakhs.",
+    "Experience requirements specify years in business or past orders of similar IT equipment.",
+    "BIS registration applies to product categories like laptops (IS 13252), UPS (IS 16242).",
+    "Make in India class is determined by local content percentage (e.g. Class I >= 50%, Class II >= 20%).",
+    "Warranty years are often mentioned as 'on-site warranty' or 'comprehensive warranty'.",
+    "GeM tenders often exempt MSME/Startup vendors from turnover and prior experience criteria. For such exemptions, note exemption terms in the description and mark is_mandatory accordingly.",
+    "Bid validity and certificate validity deadlines must be extracted as requirement_type 'date'."
+  ]
+}
